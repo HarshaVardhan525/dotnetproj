@@ -1,19 +1,23 @@
-# Visual Studio
-.vs/
-**/.vs/
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
 
-# Build folders
+# Visual Studio / .NET
+.vs/
 bin/
 obj/
-
-# Visual Studio user files
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
-
-# VS Code
-.vscode/
-
-# Logs
-*.log
+*.rsuser
+[Dd]ebug/
+[Rr]elease/
+TestResults/
