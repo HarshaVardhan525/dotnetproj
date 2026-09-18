@@ -1,0 +1,21 @@
+name: BUild dot net app
+on:
+    workflow_dispatch
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get code
+              uses: actions/checkout@v6
+            - name: Setup .net
+              uses: actions/setup-dotnet@v6
+              with:
+                dotnet-version: 10.0.x
+            - name: restore dependencies
+              run: |
+                cd Quickcart
+                dotnet restore
+            - name: Build
+              run: |
+                cd Quickcart
+                dotnet build --configuration Release
