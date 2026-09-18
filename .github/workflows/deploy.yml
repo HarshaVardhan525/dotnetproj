@@ -1,0 +1,55 @@
+name : Terraform infra plus deploy dotnet app
+on:
+    workflow_dispatch
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout-code
+              uses: actions/checkout@v6
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v3
+            - name: Azure login
+              uses: azure/login@v1
+              with:
+                creds: ${{secrets.AZURE_CREDENTIALS}}
+            - name: Terraform init
+              run : |
+                cd Terraform
+                terraform init
+            - name: Terraform validate
+              run: |
+                cd Terraform
+                terraform validate
+            - name: Terraform plan
+              run: |
+                cd Terraform
+                terraform plan
+            - name: Terraform apply
+              run: |
+                cd Terraform
+                terraform apply --auto-approve
+
+            - name: Setup .net
+              uses: actions/setup-dotnet@v6
+              with:
+                dotnet-version: 10.0.x
+            - name: restore dependencies
+              run: |
+                cd Quickcart
+                dotnet restore
+            - name: Build
+              run: |
+                cd Quickcart
+                dotnet build --configuration Release
+            - name: Publish
+              run: |
+                cd Quickcart
+                dotnet publish -c Release -o ./publish
+            - name: Deploy to azure webapp
+              uses: azure/webapps-deploy@v2
+              with:
+                app-name: webapp-quickcart
+                package: ./publish
+
