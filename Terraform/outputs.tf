@@ -1,5 +1,6 @@
 output "web_app_name" {
-  value = azurerm_windows_web_app.qcwebapp
+  value     = azurerm_linux_web_app.web_app.name
+  sensitive = true
 }
 
 output "web_app_url" {
